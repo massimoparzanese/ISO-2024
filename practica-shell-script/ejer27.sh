@@ -8,7 +8,7 @@ function inicializar() {
 	echo "Arreglo creado"
 }
 function agregar_elem() {
-	if [ -n "$array" ]
+	if [ ! -z  array ]
 	then
 		if [ $# -ne 0 ]
 		then
@@ -20,14 +20,15 @@ function agregar_elem() {
 	fi
 }
 function eliminar_elem() {
-	if [ -n "${array}" ] 
+	if [ ! -z "$array" ] 
 	then
 		if [ $# -eq 1 ]  # Pregunto si me pasaron el parámetro
 		then
 			if [ $1 -lt ${#array[@]} ]  # Verifico si la posición es válida
 			then
-				unset '${array[$1]}'
+				unset array[$1]
 				array=(${array[@]}) # Realizo corrimiento
+				echo "Elemento eliminado con exito"
 			else
 				echo "La posición pasada por parámetro no es válida"
 			fi
@@ -39,7 +40,7 @@ function eliminar_elem() {
 	fi
 }
 function longitud() {
-	if [ -n "$array" ]
+	if [ ! -z "$array" ]
 	then
 		echo "La longitud del arreglo es: ${#array[@]}"
 	else
@@ -47,7 +48,7 @@ function longitud() {
 	fi
 }
 function imprimir() {
-	if [ -n	"$array" ]
+	if [ ! -z "$array" ]
 	then
 		echo "Los elementos del arreglo son : ${array[@]}"
 	else
@@ -68,12 +69,12 @@ function inicializar_Con_Valores() {
 	fi
 }
 options=("inicializo_arreglo" "agregarelemento" "eliminar_elemento" "longitud_arreglo" "imprimir_arreglo" "inicializar_Con_Valores_arr" "Fin")
+array=()
 select action in "${options[@]}"
 do
 	case $action in 
 		"inicializo_arreglo")
 			inicializar
-			array=()
 		;;
 		"agregarelemento")
 			agregar_elem 4
