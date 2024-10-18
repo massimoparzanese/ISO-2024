@@ -3,7 +3,7 @@
 # Los guarda en un arreglo
 # Y luego despliega un menú de opciones para que el usuario elija que hacer
 # Sobre el arreglo
-function verArch() {
+function verArchivo() {
 	echo "Ingrese el nombre del archivo a buscar"
 	read archivo
 	for i in ${array[@]}
@@ -16,53 +16,55 @@ function verArch() {
 		fi
 	done
 }
-function eliminarArch() {
+function cantidadArchivos() {
+	echo ${#array[@]
+}
+function eliminarArchivo() {
 	echo "Ingrese el archivo a eliminar"
 	read archivo
 	eliminado=0
+	encontrado=0
 	opciones=("Si" "No")
-	select opcion in ${opciones[@]}
+	for((i=0; i < ${#array[@]}; i++))
 	do
-		for((i=0; i < ${#array[@]}; i++))
-		do
-			doc=$(basename ${array[$i]})
-			if [ "$doc" = "$archivo" ]
-			then
-				eliminado=${array[$i]}
-				unset 'array[$i]'
-				array=(${array[@]})
-				echo "arreglo nuevo ${array[@]}"
-				break 1
-			fi
-		done
-		if [ "$opcion" = "No" ]
+		doc=$(basename ${array[$i]})
+		if [ "$doc" = "$archivo" ]
 		then
+			encontrado=$i
+						break 
+		fi
+	done
+	if [ encontrado -ne 0 ]
+	then
+	 	echo "¿Desea eliminar el archivo?"
+		echo "Igrese Si, o No"
+		read opcion
+		eliminado=${array[$i]}
+		unset 'array[$i]'
+		array=(${array[@]})
+		echo "arreglo nuevo ${array[@]}"
+		if [ $opcion = "No" ]
+		then 
 			sudo rm $eliminado
 		fi
-		break
-					
-	done
+ 	else
+		return 3
+	fi
 }
 dir=/home
-for archivo in "$dir"/*
-do
-	if [ -f "$archivo" ]
-	then
-		array+=$archivo
-	fi
-done
+array=$((find -name "*.doc"))
 options=("verArchivo" "borrarArchivo" "cantidadArchivos" "Fin")
 select option in ${options[@]}
 do
 	case $option in
 		"verArchivo")
-			verArch
+			verArchivo
 		;;
 		"cantidadArchivos")
-			echo "la cantidad de archivos .doc es: ${#array[@]}"
+			cantidadArchivos
 		;;
 		"borrarArchivo")
-			eliminarArch
+			eliminarArchivo
 		;;
 		"Fin")
 			echo "Terminó"

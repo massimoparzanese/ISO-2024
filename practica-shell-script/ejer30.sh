@@ -4,16 +4,16 @@
 # Y los mueve a la carpeta bin
 # Si esta no existe la crea
 cant=0
+if [ ! -d ~/bin ]
+then
+	mkdir ~/bin	
+fi
 for archivo in ~/*
 do
-	if [ -e $archivo ] && [ ! -d  "$archivo" ] && [ -x "$archivo" ]
+	if [ -f $archivo ]  && [ -x "$archivo" ]
 	then
 		echo "Se moverá el archivo $archivo"
 		cant=$((cant + 1))
-		if [ ! -d ~/bin ]
-		then
-			mkdir ~/bin	
-		fi
 		mv $archivo ~/bin
 	fi
 done
